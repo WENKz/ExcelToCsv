@@ -8,7 +8,7 @@ define('ROOT', str_replace('index.php', '', $_SERVER['SCRIPT_FILENAME']));
 
 require(ROOT . 'Core/Controller.php');
 require(ROOT . 'Core/Model.php');
-require(ROOT . 'Core/simple_html_dom.php');
+require(ROOT . 'Core/Classes/PHPExcel/IOFactory.php');
 
 
 
