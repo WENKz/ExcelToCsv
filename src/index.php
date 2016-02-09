@@ -18,7 +18,7 @@ class CatalogueController {
         {
             unlink("output.csv");
         }
-        $this->convertXLStoCSV('Tableau_récap_marges_etc.xlsx', "HTNOVALEUR", 'output.csv');
+        $this->convertXLStoCSV('Tableau_récap.xlsx', "FEUILLE", 'output.csv');
     }
 
     private function convertXLStoCSV($infile, $feuille, $outfile)
