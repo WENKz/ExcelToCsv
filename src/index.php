@@ -63,7 +63,7 @@ class CatalogueController {
         {
             unlink("output.csv");
         }
-        $this->convertXLStoCSV('tab_excel.xlsx', "feuille", 'output.csv');
+        $this->convertXLStoCSV('Tableau_récap_marges_etc.xlsx', "HTNOVALEUR", 'output.csv');
         $tableauCsv = $this->TraitementCsvToArray("output.csv", ',');
         $DesignationReference = $this->TraitementCsvToArray("designation_ref.csv", ';');
         $ArrayTab = $this->traitementTableau($tableauCsv);
@@ -153,7 +153,8 @@ class CatalogueController {
             }
             foreach ($produits as $produit)
             {
-                if (!empty(preg_grep("/" . $DesignationTraité["ref"] . "+/", $produit)) && $produit["REFERENCE"] != "TUBE-0023")
+       
+                if (strrpos ($produit["REFERENCE"],$DesignationTraité["ref"]) !== false && $produit["REFERENCE"] != "TUBE-0023")
                 {
                     if ($lignes >= 30)
                     {
