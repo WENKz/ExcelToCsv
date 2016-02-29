@@ -1,9 +1,9 @@
 <style>
     <!--
- @page {
-   size: 7in 9.25in;
-   margin: 27mm 16mm 27mm 16mm;
-}
+    @page {
+        size: 7in 9.25in;
+        margin: 27mm 16mm 27mm 16mm;
+    }
     .ACBG{background-color:rgb(92 , 121 , 187)}
     .ACBR{background-color:rgb(221 , 34 , 133)}
     .ACCE{background-color:rgb(134 , 194 , 235)}
@@ -14,6 +14,7 @@
     .BIET{background-color:rgb(142 , 103 , 63)}
     .BLTA{background-color:rgb(96 , 76 , 35)}
     .BOCI{background-color:rgb(211 , 39 , 29)}
+    .ETFE{background-color:rgb(211 , 39 , 29)}
     .BOX{background-color:rgb(120 , 179 , 43)}
     .BRIQ{background-color:rgb(221 , 34 , 133)}
     .CEND{background-color:rgb(254 , 201 , 23)}
@@ -53,7 +54,53 @@ define('WEBROOT', str_replace('index.php', '', $_SERVER['SCRIPT_NAME']));
 define('ROOT', str_replace('index.php', '', $_SERVER['SCRIPT_FILENAME']));
 
 require(ROOT . 'PHPExcel.php');
+require(ROOT . 'fpdf.php');
+$buffer = ob_get_clean();
+$pdf = new FPDF('L', 'mm', 'A4');
+$pdf->AddPage();
+$row = file('pays.txt');
+$pdf->SetFont('Arial', 'B',8);
+$ligne = 0;
+foreach ($row as $rowValue)
+{
+    $data = explode(';', $rowValue);
 
+    $val = 0;
+    foreach ($data as $columnValue)
+    {
+        // $cellWidth = $pdf->GetStringWidth($columnValue);
+        if ($val <= 1)
+        {
+            if (strrpos($columnValue, "Prix") !== false)
+            {
+                $pdf->Cell(25, 6, " ", 'RTB');
+                $pdf->Cell(16, 6, $columnValue, 1);
+            }
+            else
+            {
+                if (strrpos($columnValue, "-") !== false && $val == 0)
+                {
+                        $pdf->SetFont('Arial', '', 7);
+
+                    $pdf->Cell(25, 6, $columnValue, 1);
+                }
+                else
+                {
+                    $pdf->Cell(115, 6, $columnValue, 'LTB');
+                }
+            }
+        }
+        else
+        {
+            $pdf->Cell(16, 6, $columnValue, 1);
+        }
+        $val++;
+    }
+    $pdf->SetFont('Arial', 'B', 8);
+    $pdf->Ln();
+    $ligne++;
+}
+$pdf->Output(); 
 class CatalogueController {
 
     public function index()
